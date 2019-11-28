@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+init
+
+<ul>
+
+{% for con in data %}
+<li><div>{{con.contents}}</div></li>
+{% endfor %}
+</ul>
+
+<form action="/board/set_data" method="post">
+    <input type="text" name="conten"/>
+    <input type="hidden" value="{{data}}" name="dat"/>
+    <button type="submit"> 버튼 </button>
+</form>
+</body>
+</html>

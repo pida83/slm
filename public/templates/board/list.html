@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>list</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+
+<div >
+
+</div>
+<!--
+
+<table>
+    <thead>
+    <tr>
+        <th>no</th>
+        <th>contents</th>
+        <th>name</th>
+        <th>id</th>
+        <th>edit</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for con in data %}
+    <tr align="center">
+        <td>{{con.id}}</td>
+        <td>{{con.contents}}</td>
+        <td>{{con.user_name}}</td>
+        <td>{{con.user_id}}</td>
+        <td><button onclick="viewDetail('/board/view/{{con.id}}')">view</button></td>
+        <td><button onclick="delRow('/board/del/{{con.id}}')">delete</button></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+-->
+<div id="tb1">
+    <table>
+        <thead>
+        <tr>
+            <th>no</th>
+            <th>contents</th>
+            <th>name</th>
+            <th>id</th>
+            <th>edit</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr v-for="list in lists">
+            <td>${list.id}</td>
+            <td>${list.contents} ${ getaMessage } </td>
+            <td>${list.user_name}</td>
+            <td>${list.user_id}</td>
+            <td><button v-on:click="redirection('/board/view/',list.id)">view</button></td>
+            <td><button v-on:click="redirection('/board/del/',list.id)">delete</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el : "#tb1",
+        delimiters: ['${', '}'],
+        computed :  {
+            getaMessage : function() {
+                console.log(this)
+                //return this;
+            }
+        },
+        data : {
+            lists : {{data|raw }}
+        },
+        methods : {
+            redirection: function(url,no){
+
+                location.href = url+no;
+            },
+            delRow : function(url){
+                //location.href = url;
+            },
+        },
+    });
+
+    function Person(first, last, age, gender, interests) {
+        this.name = {
+            'first': first,
+            'last' : last
+        };
+        this.age = age;
+        this.gender = gender;
+        this.interests = interests;
+        this.bio = function() {
+            alert(this.name.first + ' ' + this.name.last + ' is ' + this.age + ' years old. He likes ' + this.interests[0] + ' and ' + this.interests[1] + '.');
+        };
+    }
+    Person.prototype.greeting = function (){
+        alert('Hi! I\'m ' + this.name.first + '.');
+    }
+
+    function Teacher(first, last, age, gender, interests,subject) {
+        Person.call(this,first, last, age, gender, interests);
+        this.subject = subject;
+    }
+    Teacher.prototype = Object.create(Person.prototype);
+    Teacher.prototype.constructor = Teacher;
+
+    var person1 = new Teacher('Bob', 'Smith', 32, 'male', ['music', 'skiing'],"history");
+    var person2 = {
+        first : "fir"
+    };
+</script>
+</body>
+</html>

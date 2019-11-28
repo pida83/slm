@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>edit</title>
+</head>
+<body>
+<ul>
+<form action="/board/set_data" method="post">
+
+    <input type="hidden" name="id" value="{{data.id}}"/>
+    <input  type="text" name="contents" value="{{data.contents}}"/>
+    <input  type="text" name="user_name" value="{{data.user_name}}"/>
+    <input  type="text" name="user_id" value="{{data.user_id}}"/>
+    <button type="submit"> 버튼 </button>
+</form>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CSS Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+</head>
+<body>
+<form id="frm"  method="post" enctype="multipart/form-data">
+    <input type="hidden" name="{{ini}}" value="demo">
+    <input type="file" name="myfile[]"><br>
+    <input onclick="do_upload()" type="button" value="Upload File to Server">
+</form>
+
+<div class="progress">
+    <div>
+    <div class="bar" style="background: #0E0EFF; height: 10px; width: 0px;"></div >
+    </div>
+    <div class="percent">0%</div >
+</div>
+
+<div id="status"></div>
+<script>
+
+    function do_upload() {
+        var uploaded = false;
+        $('form').ajaxForm({
+            type:'POST',
+            url : "/board/upload_data2?X-Progress-ID=aaslkdjfme",
+            enctype : "multipart/form-data",
+            dataType : "json",
+            error : function(d, s, e) {
+                uploaded = true;
+            },
+        success : function(result){
+                uploaded = true;
+            },
+            always : function() {
+                uploaded = true;
+            }
+
+        }).submit();
+
+    }
+
+
+$(document).ready(function(){
+    $('form').submit(function() {
+        function update_file_upload_progress() {
+            $.get('/board/chk_upload?process',function(data){
+                console.log(data)
+                if(data.done !== true) {
+                    console.log(data)
+                    setTimeout( update_file_upload_progress, 500 );
+                }
+
+            },'json').done(function(jqXHR) {
+                console.log("second success" );
+            })
+                .fail(function(jqXHR) {
+                    console.log("error" );
+                })
+                .always(function(jqXHR) {
+                    console.log("finished" );
+                });
+            /*
+            $.ajax({
+                url:'/board/chk_upload?process',// 요청 할 주소
+                //async:true,// false 일 경우 동기 요청으로 변경
+                type:'POST', // GET, PUT
+                data: {
+                    Name:'ajax',
+                    Age:'10'
+                },// 전송할 데이터
+                dataType:'json',// xml, json, script, html
+                success:function(data) {
+                    console.log(data);
+                },// 요청 완료 시
+                error:function(jqXHR) {
+                    console.log(jqXHR)
+                },// 요청 실패.
+            });
+
+             */
+        }
+        update_file_upload_progress();
+    })
+})
+
+    /*
+    $("#upload_file_btn").click(function(e) {
+        console.log("upload button click");
+        $.ajax({
+            type:'POST',
+            url: '/board/upload_data',
+            data: {"uploadForm" : $("#upload_file")},
+            xhr: function() {
+                var myXhr = $.ajaxSettings.xhr();
+                if(myXhr.upload){
+                    myXhr.upload.addEventListener('progress',progress, false);
+                }
+                return myXhr;
+            },
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                console.log(data);
+                alert('data returned successfully');
+            },
+            error: function(data){
+                console.log(data);
+            }
+        })
+    });
+
+
+    /*
+  function uploadForm(){
+      //var formData = new FormData();
+      $("#upload_file").ajaxForm({
+          type:'POST',
+          url: '/board/upload_data',
+          data: {"uploadForm" : $("#upload_file")},
+          cache:false,
+          contentType: false,
+          processData: false,
+          success:function(data){
+              console.log(data);
+              alert('data returned successfully');
+          },
+          error: function(data){
+              console.log(data);
+          }
+      });
+
+//        $('#upload_file').ajaxSubmit();
+
+        xhr: function() {
+              var myXhr = $.ajaxSettings.xhr();
+              if(myXhr.upload){
+                  myXhr.upload.addEventListener('progress',progress, false);
+              }
+              return myXhr;
+          },
+      var xhr = $("#upload_file").data('jqxhr');
+      xhr.done(function() {
+
+      });
+
+
+    }
+ */
+    /**
+
+     * @param e
+     */
+
+    function progress(e){
+        if(e.lengthComputable){
+            var max = e.total;
+            var current = e.loaded;
+            var Percentage = (current * 100)/max;
+            console.log(Percentage);
+            if(Percentage >= 100)
+            {
+                // process completed
+            }
+        }
+    }
+</script>
+</body>
+</html>
+
+
