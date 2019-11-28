@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CSS Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+</head>
+<body>
+<form action="/board/upload_data" method="post" enctype="multipart/form-data">
+    <input type="file" name="myfile[]"><br>
+    <input type="file" name="myfile[]"><br>
+    <input type="submit" value="Upload File to Server">
+</form>
+
+<div class="progress">
+    <div>
+    <div class="bar" style="background: #0E0EFF; height: 10px; width: 0px;"></div >
+    </div>
+    <div class="percent">0%</div >
+</div>
+
+<div id="status"></div>
+<script>
+    $(function() {
+
+        var bar = $('.bar');
+        var percent = $('.percent');
+        var status = $('#status');
+
+        $('form').ajaxForm({
+            beforeSend: function() {
+                status.empty();
+                var percentVal = '0%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                console.log(event)
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
+            complete: function(xhr) {
+                status.html(xhr.responseText);
+            }
+        });
+    });
+    /*
+    $("#upload_file_btn").click(function(e) {
+        console.log("upload button click");
+        $.ajax({
+            type:'POST',
+            url: '/board/upload_data',
+            data: {"uploadForm" : $("#upload_file")},
+            xhr: function() {
+                var myXhr = $.ajaxSettings.xhr();
+                if(myXhr.upload){
+                    myXhr.upload.addEventListener('progress',progress, false);
+                }
+                return myXhr;
+            },
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+                console.log(data);
+                alert('data returned successfully');
+            },
+            error: function(data){
+                console.log(data);
+            }
+        })
+    });
+
+
+    /*
+  function uploadForm(){
+      //var formData = new FormData();
+      $("#upload_file").ajaxForm({
+          type:'POST',
+          url: '/board/upload_data',
+          data: {"uploadForm" : $("#upload_file")},
+          cache:false,
+          contentType: false,
+          processData: false,
+          success:function(data){
+              console.log(data);
+              alert('data returned successfully');
+          },
+          error: function(data){
+              console.log(data);
+          }
+      });
+
+//        $('#upload_file').ajaxSubmit();
+
+        xhr: function() {
+              var myXhr = $.ajaxSettings.xhr();
+              if(myXhr.upload){
+                  myXhr.upload.addEventListener('progress',progress, false);
+              }
+              return myXhr;
+          },
+      var xhr = $("#upload_file").data('jqxhr');
+      xhr.done(function() {
+
+      });
+
+
+    }
+ */
+    /**
+
+     * @param e
+     */
+
+    function progress(e){
+        if(e.lengthComputable){
+            var max = e.total;
+            var current = e.loaded;
+            var Percentage = (current * 100)/max;
+            console.log(Percentage);
+            if(Percentage >= 100)
+            {
+                // process completed
+            }
+        }
+    }
+</script>
+</body>
+</html>
+
+

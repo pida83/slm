@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>view</title>
+</head>
+<body>
+
+<table>
+    <thead>
+
+    <tr>
+        <th>no</th>
+        <th>contents</th>
+        <th>name</th>
+        <th>id</th>
+        <th>edit</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr align="center">
+        <td>{{data.id}}</td>
+        <td>{{data.contents}}</td>
+        <td>{{data.user_name}}</td>
+        <td>{{data.user_id}}</td>
+        <td><button onclick="location.href = '/board/edit/{{data.id}}'">edit</button></td>
+        <td><button onclick="location.href = '/board/del/{{data.id}}'">delete</button></td>
+    </tr>
+    </tbody>
+    <td><button onclick="location.href = '/board/index'">return</button></td>
+</table>
+</body>
+</html>

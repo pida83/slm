@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adaptive Streaming in HTML5</title>
+    <!-- DASH-AVC/265 reference implementation -->
+    <style>
+        video {
+            width: 80%;
+            height: 80%;
+        }
+    </style>
+    <link href="https://vjs.zencdn.net/7.5.5/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+</head>
+<body onload="">
+<h1>Adaptive Streaming with HTML5</h1>
+<video id="videoPlayer"   class="video-js" controls></video>
+
+<script type="text/javascript">
+
+    (function(){
+        var url = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
+        var player = dashjs.MediaPlayer().create();
+        player.initialize(document.querySelector("#videoPlayer"), url, true);
+    })();
+
+
+</script>
+<script src="https://vjs.zencdn.net/7.5.5/video.js"></script>
+</body>
+</html>
