@@ -18,18 +18,15 @@ return function (App $app) {
     $app->add(TwigMiddleware::createFromContainer($app, Twig::class));
 
     $app->add(function(Request $request, RequestHandler $handler){
+        $request = $request->withAttribute("foo","bar");
 
         $response = $handler->handle($request);
-
         $existingContent = (string) $response->getBody();
-        
         $response = new Response();
-        $response->getBody()->write('BEFORE true');
+        $response->getBody()->write('BEFORE <br/>');
         $response->getBody()->write($existingContent);
-        
-        $response->getBody()->write('after true');
-        $test  = (string) $response->getBody();
-
+        $response->getBody()->write('<br/> AFTER');
+        //$test  = (string) $response->getBody();
         return $response;
-        });
+    });
 };

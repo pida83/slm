@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 
 use App\Application\Middleware\SessionMiddleware;
-use App\Utility\Configuration;
 use DI\ContainerBuilder;
 use Illuminate\Database\Capsule\Manager;
 use Monolog\Handler\StreamHandler;
@@ -33,8 +32,7 @@ return function (ContainerBuilder $containerBuilder) {
         Twig::class => function(ContainerInterface $c) {
                 $settings = $c->get('settings');
                 $twigSetting = $settings['twig'];
-                $twig = new Twig($twigSetting['basepath'],$twigSetting['option']);
-                return $twig;
+                return new Twig($twigSetting['basepath'],$twigSetting['option']);
          },
         "db" => function (ContainerInterface $c) {
             $settings = $c->get('settings');
@@ -46,10 +44,11 @@ return function (ContainerBuilder $containerBuilder) {
             return $capsule;
         },
         "flash" => function (ContainerInterface $c) {
-            return new Messages($_SESSION,"flash_data");
+            //return new Messages($_SESSION,"flash_data");
         },
-
-
+        "view" => function (ContainerInterface $c) {
+            return $c->get(Twig::class);
+        }
     ]);
 
 };

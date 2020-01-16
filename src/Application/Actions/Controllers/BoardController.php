@@ -27,6 +27,7 @@ class BoardController extends BaseController
 
         $this->flash = $this->container->get("flash");
 
+
         $this->db::enableQueryLog();
     }
 
@@ -62,7 +63,7 @@ class BoardController extends BaseController
     {
 
         $list = $this->boardService->getList();
-        return $this->view->render($this->response,"/board/list.html",["data" => $list]);
+        return $this->view->render($this->response,"/board/list.html",["data" => $list,"uid"=>session_id()]);
     }
 
     public function home()
