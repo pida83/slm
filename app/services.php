@@ -14,6 +14,7 @@ return function (ContainerInterface $c) {
 
 
     // push to master this
+    // add from test1
     //$c->set(BarManager::class,\DI\create()->constructor(DI\get(Bar::class),"seconds arg") ); // 생성자에 파라미터 주입 시
     // BarManager::class => \DI\create()->constructor(DI\get(Bar::class),"test") // 생성자에 주입시
 };
