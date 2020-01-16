@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>list</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
+    <script src="http://192.168.10.10:3030/socket.io/socket.io.js"></script>
 </head>
 <body>
 
-<div >
+<div id="user">
+    <select name="" id="">
+        <option value="">all</option>
+        <option v-for="user in lists">${user.cId}</option>
+    </select>
 
 </div>
 <!--
@@ -38,6 +42,15 @@
     </tbody>
 </table>
 -->
+<div>
+    <textarea name="chatArea" id="chatArea" cols="50" rows="20" style="resize: none; display: block;" readonly ></textarea>
+    <input type="text" id="msg" />
+    <input type="button" id="send" value="send"/>
+</div>
+<div style="margin-top: 10px;">
+    <input type="text" id="userid">
+    <input type="button" id="set_id" value="send"/>
+</div>
 <div id="tb1">
     <table>
         <thead>
@@ -61,7 +74,6 @@
         </tbody>
     </table>
 </div>
-
 <script type="text/javascript">
     var app = new Vue({
         el : "#tb1",
@@ -86,33 +98,72 @@
         },
     });
 
-    function Person(first, last, age, gender, interests) {
-        this.name = {
-            'first': first,
-            'last' : last
-        };
-        this.age = age;
-        this.gender = gender;
-        this.interests = interests;
-        this.bio = function() {
-            alert(this.name.first + ' ' + this.name.last + ' is ' + this.age + ' years old. He likes ' + this.interests[0] + ' and ' + this.interests[1] + '.');
-        };
-    }
-    Person.prototype.greeting = function (){
-        alert('Hi! I\'m ' + this.name.first + '.');
+    $(function () {
+        var socket;
+
+
+        $("#send").click(function(){
+            socket.emit('send message', {"msg":$("#msg").val(),"user":$("#userid").val(),"to_user":"testa"})
+        });
+
+        $("#set_id").click(function(){
+            console.log("connect socket server");
+            socket = io("http://192.168.10.10:3030",{forceNew: false, query:{"nick_name": $("#userid").val(),"realid": "{{ uid }}",sId: "sess"},transports:['websocket','polling']});
+
+            socket.on('connection',function(obj){
+                console.log(obj);
+            });
+
+            //socket.emit('send message', {"msg":"test"});
+            socket.on('change name', function(name){ //3-3
+                console.log(name)
+            });
+
+            socket.on('receive message', function(msg){ //3-3
+                $("#chatArea").append(msg);
+                var $textarea = $('#chatArea');
+                $textarea.scrollTop($textarea[0].scrollHeight);
+
+            });
+
+            socket.on("send whis",function(){
+
+            })
+            socket.emit("send whis",function(){
+
+            })
+            socket.on('get user', function(users){ //3-3
+                setUserFromServer(users)
+            });
+
+            $("#connect").click(function(){
+
+            });
+        });
+
+
+    })
+
+    function setUserFromServer(users) {
+        console.log(users)
+        var app2 = new Vue({
+            el : "#user",
+            delimiters: ['${', '}'],
+            computed :  {
+                getaMessage : function() {
+                    console.log(this)
+                    //return this;
+                }
+            },
+            data : {
+                lists : users
+            },
+        methods : {
+
+        },
+    });
     }
 
-    function Teacher(first, last, age, gender, interests,subject) {
-        Person.call(this,first, last, age, gender, interests);
-        this.subject = subject;
-    }
-    Teacher.prototype = Object.create(Person.prototype);
-    Teacher.prototype.constructor = Teacher;
-
-    var person1 = new Teacher('Bob', 'Smith', 32, 'male', ['music', 'skiing'],"history");
-    var person2 = {
-        first : "fir"
-    };
 </script>
 </body>
 </html>

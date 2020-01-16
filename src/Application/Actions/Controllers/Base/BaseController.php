@@ -37,12 +37,11 @@ class BaseController implements HomeInterface
 
 
     public function __construct(ContainerInterface $container) {
-
         $this->container = $container;
 
         $this->view = $container->get(Twig::class);
         $this->db = $container->get("db");
-        #$this->flash =$container->get("flash");
+        $this->flash =$container->get("flash");
     }
 
     public function getHome($ia)
