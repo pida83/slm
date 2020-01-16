@@ -28,7 +28,7 @@ class HomeController extends BaseController
         $param = $req->getQueryParams();
         //return $this->view->render($res, , $params);
         $ba = $this->container->get(BarManager::class);
-        $ba->mail("1","2");
+        $ba->mail("1","2222");
 
         //$ba->mail("1","2");
 
