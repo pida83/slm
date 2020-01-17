@@ -14,5 +14,5 @@ return function (ContainerInterface $c) {
     // BarManager::class => \DI\create()->constructor(DI\get(Bar::class),"test") // 생성자에 주입시
 
 
-    test
+
 };
