@@ -14,6 +14,7 @@ return function (ContainerInterface $c) {
     // 다 지우기
     // def
     // remote push
+    // commit
     //$c->set(BarManager::class,\DI\create()->constructor(DI\get(Bar::class),"seconds arg") ); // 생성자에 파라미터 주입 시
     // BarManager::class => \DI\create()->constructor(DI\get(Bar::class),"test") // 생성자에 주입시
 };
